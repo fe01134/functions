@@ -1416,11 +1416,11 @@ class BaseDataSource(BaseTransformer):
         elif self.merge_method == 'nearest': 
             overlapping_columns = [x for x in overlapping_columns if x not in [self._entity_type._entity_id,self._entity_type._timestamp]]
             try:
-                df = pd.merge_asof(left=df,right=new_df,by=self._entity_type._entity_id,on=self._entity_type._timestamp,tolerance=self.merge_nearest_tolerance,suffixes=[None,'_new_'])
+                df = pd.merge_asof(left=df,right=new_df,by=self._entity_type._entity_id,on=self._entity_type._timestamp_col,tolerance=self.merge_nearest_tolerance,suffixes=[None,'_new_'])
             except ValueError:
-                new_df = new_df.sort_values([self._entity_type._timestamp,self._entity_type._entity_id])
+                new_df = new_df.sort_values([self._entity_type._timestamp_col,self._entity_type._entity_id])
                 try:
-                    df = pd.merge_asof(left=df,right=new_df,by=self._entity_type._entity_id,on=self._entity_type._timestamp,tolerance=self.merge_nearest_tolerance,suffixes=[None,'_new_'])
+                    df = pd.merge_asof(left=df,right=new_df,by=self._entity_type._entity_id,on=self._entity_type._timestamp_col,tolerance=self.merge_nearest_tolerance,suffixes=[None,'_new_'])
                 except ValueError:
                     df = df.sort_values([self._entity_type._timestamp_col,self._entity_type._entity_id])
                     df = pd.merge_asof(left=df,right=new_df,by=self._entity_type._entity_id,on=self._entity_type._timestamp_col,tolerance=self.merge_nearest_tolerance,suffixes=[None,'_new_'])
